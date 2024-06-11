@@ -1,7 +1,6 @@
 import React from "react";
-import "./styles.css";
-//import { Employee } from "./services/Employee";
-//mport EmployeeService from "./services/EmployeeService";
+import "../../styles.css";
+import { Employee } from "@serv/Employee";
 
 interface EmployeeCardProps {
   employees: Employee[];

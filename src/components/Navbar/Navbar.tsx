@@ -1,8 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import EmployeeService from "./services/EmployeeService";
-import { Employee } from "./services/Employee";
+import React, { ChangeEvent } from "react";
+import "../../index.css";
 
 interface NavbarProps {
   handleOpenModal: (modalTitle: string) => void;

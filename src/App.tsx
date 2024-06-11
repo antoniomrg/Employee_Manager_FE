@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
-import EmployeeCard from "./EmployeeCard";
-import EmployeeModal from "./EmployeeModal";
+import Navbar from "components/Navbar";
+import EmployeeCard from "./components/EmployeeCard";
+import EmployeeModal from "./components/EmployeeModal";
 import { Employee } from "./services/Employee";
 import EmployeeService from "./services/EmployeeService";
-import DeleteEmployeeModal from "./DeleteEmployeeModal";
+import DeleteEmployeeModal from "./components/DeleteEmployeeModal";
 
 const App: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);

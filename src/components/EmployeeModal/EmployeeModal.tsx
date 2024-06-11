@@ -1,8 +1,8 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import EmployeeService from "./services/EmployeeService";
-import { Employee } from "./services/Employee";
+import { Employee } from "@serv/Employee";
+import EmployeeService from "../../services/EmployeeService";
 
 interface ModalProps {
   show: boolean;
