@@ -24,17 +24,20 @@ const App: React.FC = () => {
     // Fetch employees on component mount
     EmployeeService.getAllEmployees().then((response) => {
       setEmployees(response.data);
+      console.log("Retreiving all employees");
     });
   }, []);
 
   useEffect(() => {
-    if (searchEmployeeInput !== null) {
+    // To avoid searching on first render
+    if (searchEmployeeInput.trim()) {
       try {
         EmployeeService.getEmployeesByName(searchEmployeeInput).then(
           (response) => {
             setEmployees(response.data);
           }
         );
+        console.log("Searching employees");
       } catch (error) {
         console.error("Error fetching employee:", error);
       }
