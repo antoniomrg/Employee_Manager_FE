@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Navbar from "components/Navbar";
 import EmployeeCard from "./components/EmployeeCard";
 import EmployeeModal from "./components/EmployeeModal";
@@ -24,7 +24,7 @@ const App: React.FC = () => {
     // Fetch employees on component mount
     EmployeeService.getAllEmployees().then((response) => {
       setEmployees(response.data);
-      console.log("Retreiving all employees");
+      // console.log("Retreiving all employees");
     });
   }, []);
 
@@ -44,43 +44,46 @@ const App: React.FC = () => {
     }
   }, [searchEmployeeInput]);
 
-  const handleOpenModal = (modalTitle: string, employee?: Employee) => {
-    if (employee) {
-      setInitialFormData(employee);
-    } else {
-      setInitialFormData(undefined);
-    }
-    setModalTitle(modalTitle);
-    setShowModal(true);
-  };
+  const handleOpenModal = useCallback(
+    (modalTitle: string, employee?: Employee) => {
+      if (employee) {
+        setInitialFormData(employee);
+      } else {
+        setInitialFormData(undefined);
+      }
+      setModalTitle(modalTitle);
+      setShowModal(true);
+    },
+    []
+  );
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setShowModal(false);
-  };
+  }, []);
 
-  const handleOpenDeleteModal = (id: number) => {
+  const handleOpenDeleteModal = useCallback((id: number) => {
     setSelectedEmployeeId(id);
     setShowDeleteModal(true);
-  };
+  }, []);
 
-  const handleCloseDeleteModal = () => {
+  const handleCloseDeleteModal = useCallback(() => {
     setSelectedEmployeeId(null);
     setShowDeleteModal(false);
-  };
+  }, []);
 
-  const handleAddEmployee = (newEmployee: Employee) => {
+  const handleAddEmployee = useCallback((newEmployee: Employee) => {
     setEmployees([...employees, newEmployee]);
-  };
+  }, []);
 
-  const handleUpdateEmployee = (updatedEmployee: Employee) => {
+  const handleUpdateEmployee = useCallback((updatedEmployee: Employee) => {
     setEmployees(
       employees.map((employee) =>
         employee.id === updatedEmployee.id ? updatedEmployee : employee
       )
     );
-  };
+  }, []);
 
-  const handleDeleteEmployee = async () => {
+  const handleDeleteEmployee = useCallback(async () => {
     if (selectedEmployeeId !== null) {
       try {
         await EmployeeService.deleteEmployee(selectedEmployeeId);
@@ -92,11 +95,11 @@ const App: React.FC = () => {
         console.error("Error deleting employee:", error);
       }
     }
-  };
+  }, [selectedEmployeeId, handleCloseDeleteModal]);
 
-  const handleSearchEmployeeInput = (name: string) => {
+  const handleSearchEmployeeInput = useCallback((name: string) => {
     setSearchEmployeeInput(name);
-  };
+  }, []);
 
   return (
     <>

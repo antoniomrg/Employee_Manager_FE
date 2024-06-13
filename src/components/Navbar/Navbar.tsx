@@ -11,6 +11,7 @@ const Navbar: React.FC<NavbarProps> = ({
   handleOpenModal,
   handleSearchEmployeeInput,
 }) => {
+  console.log("Navbar rendered");
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     handleSearchEmployeeInput(value);
@@ -66,4 +67,4 @@ const Navbar: React.FC<NavbarProps> = ({
   );
 };
 
-export default Navbar;
+export default React.memo(Navbar);

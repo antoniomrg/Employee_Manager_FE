@@ -21,6 +21,7 @@ const EmployeeModal: React.FC<ModalProps> = ({
   modalTitle,
   initialFormData,
 }) => {
+  console.log("Modal rendered");
   const [formData, setFormData] = useState<Employee>({
     id: 0,
     name: "",
@@ -162,4 +163,4 @@ const EmployeeModal: React.FC<ModalProps> = ({
   );
 };
 
-export default EmployeeModal;
+export default React.memo(EmployeeModal);

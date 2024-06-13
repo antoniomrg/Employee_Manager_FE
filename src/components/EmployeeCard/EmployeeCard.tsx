@@ -15,6 +15,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
   handleOpenDeleteModal,
   handleOpenModal,
 }) => {
+  console.log("Employee Card rendered");
   return (
     <div className="container" id="main-container">
       <div className="row">
@@ -126,4 +127,4 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
   );
 };
 
-export default EmployeeCard;
+export default React.memo(EmployeeCard);

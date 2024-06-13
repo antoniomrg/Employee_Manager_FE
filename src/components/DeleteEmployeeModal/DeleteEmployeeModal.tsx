@@ -14,6 +14,7 @@ const DeleteEmployeeModal: React.FC<ModalProps> = ({
   handleClose,
   onDeleteEmployee,
 }) => {
+  console.log("Rendering Delete Modal");
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
@@ -36,4 +37,4 @@ const DeleteEmployeeModal: React.FC<ModalProps> = ({
   );
 };
 
-export default DeleteEmployeeModal;
+export default React.memo(DeleteEmployeeModal);
