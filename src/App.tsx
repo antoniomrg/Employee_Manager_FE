@@ -1,15 +1,24 @@
-import React, { useCallback, useEffect, useState } from "react";
 import Navbar from "components/Navbar";
+import {
+  useCreateEmployee,
+  useDeleteEmployee,
+  useGetAllEmployees,
+  useGetEmployeesByName,
+  useUpdateEmployee,
+} from "hooks";
+import React, { useCallback, useMemo, useState } from "react";
+import DeleteEmployeeModal from "./components/DeleteEmployeeModal";
 import EmployeeCard from "./components/EmployeeCard";
 import EmployeeModal from "./components/EmployeeModal";
 import { Employee } from "./services/Employee";
-import EmployeeService from "./services/EmployeeService";
-import DeleteEmployeeModal from "./components/DeleteEmployeeModal";
 
 const App: React.FC = () => {
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const { employees, isLoading, isError, error } = useGetAllEmployees();
+  const { createEmployee } = useCreateEmployee();
+  const { deleteEmployee } = useDeleteEmployee();
+  const { updateEmployee } = useUpdateEmployee();
   const [showModal, setShowModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
+  const [modalType, setModalType] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number | null>(
     null
@@ -18,31 +27,6 @@ const App: React.FC = () => {
     undefined
   );
   const [searchEmployeeInput, setSearchEmployeeInput] = useState("");
-  const [foundEmployees, setFoundEmployees] = useState<Employee[]>([]);
-
-  useEffect(() => {
-    // Fetch employees on component mount
-    EmployeeService.getAllEmployees().then((response) => {
-      setEmployees(response.data);
-      // console.log("Retreiving all employees");
-    });
-  }, []);
-
-  useEffect(() => {
-    // To avoid searching on first render
-    if (searchEmployeeInput.trim()) {
-      try {
-        EmployeeService.getEmployeesByName(searchEmployeeInput).then(
-          (response) => {
-            setEmployees(response.data);
-          }
-        );
-        console.log("Searching employees");
-      } catch (error) {
-        console.error("Error fetching employee:", error);
-      }
-    }
-  }, [searchEmployeeInput]);
 
   const handleOpenModal = useCallback(
     (modalTitle: string, employee?: Employee) => {
@@ -51,7 +35,7 @@ const App: React.FC = () => {
       } else {
         setInitialFormData(undefined);
       }
-      setModalTitle(modalTitle);
+      setModalType(modalTitle);
       setShowModal(true);
     },
     []
@@ -71,35 +55,39 @@ const App: React.FC = () => {
     setShowDeleteModal(false);
   }, []);
 
-  const handleAddEmployee = useCallback((newEmployee: Employee) => {
-    setEmployees([...employees, newEmployee]);
-  }, []);
+  const handleAddEmployee = useCallback(
+    (newEmployee: Employee) => {
+      createEmployee(newEmployee);
+    },
+    [createEmployee]
+  );
 
-  const handleUpdateEmployee = useCallback((updatedEmployee: Employee) => {
-    setEmployees(
-      employees.map((employee) =>
-        employee.id === updatedEmployee.id ? updatedEmployee : employee
-      )
-    );
-  }, []);
+  const handleUpdateEmployee = useCallback(
+    (updatedEmployee: Employee) => {
+      updateEmployee(updatedEmployee);
+    },
+    [updateEmployee]
+  );
 
-  const handleDeleteEmployee = useCallback(async () => {
+  const handleDeleteEmployee = useCallback(() => {
     if (selectedEmployeeId !== null) {
-      try {
-        await EmployeeService.deleteEmployee(selectedEmployeeId);
-        setEmployees(
-          employees.filter((employee) => employee.id !== selectedEmployeeId)
-        );
-        handleCloseDeleteModal();
-      } catch (error) {
-        console.error("Error deleting employee:", error);
-      }
+      deleteEmployee(selectedEmployeeId);
+      handleCloseDeleteModal;
     }
-  }, [selectedEmployeeId, handleCloseDeleteModal]);
+  }, [selectedEmployeeId, deleteEmployee, handleCloseDeleteModal]);
 
   const handleSearchEmployeeInput = useCallback((name: string) => {
     setSearchEmployeeInput(name);
   }, []);
+
+  const filteredEmployees = useMemo(() => {
+    if (!searchEmployeeInput.trim()) {
+      return employees;
+    }
+    return employees.filter((employee) =>
+      employee.name.toLowerCase().includes(searchEmployeeInput.toLowerCase())
+    );
+  }, [employees, searchEmployeeInput]);
 
   return (
     <>
@@ -107,26 +95,29 @@ const App: React.FC = () => {
         handleOpenModal={handleOpenModal}
         handleSearchEmployeeInput={handleSearchEmployeeInput}
       />
+
       <EmployeeModal
         show={showModal}
         handleClose={handleCloseModal}
         onAddEmployee={handleAddEmployee}
         onUpdateEmployee={handleUpdateEmployee}
-        modalTitle={modalTitle}
+        modalTitle={modalType}
         initialFormData={initialFormData}
       />
       <EmployeeCard
-        employees={employees}
+        employees={filteredEmployees}
         show={showDeleteModal}
         handleOpenDeleteModal={handleOpenDeleteModal}
         handleOpenModal={handleOpenModal}
+        isLoading={isLoading}
+        isError={isError}
+        errorMessage={error}
       />
       <DeleteEmployeeModal
         show={showDeleteModal}
         handleClose={handleCloseDeleteModal}
         onDeleteEmployee={handleDeleteEmployee}
       />
-      {/* <EmployeeList /> */}
     </>
   );
 };

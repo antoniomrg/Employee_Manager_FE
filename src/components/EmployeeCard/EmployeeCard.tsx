@@ -1,9 +1,16 @@
 import React from "react";
 import "../../styles.css";
 import { Employee } from "@serv/Employee";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import useGetAllEmployees from "../../hooks/useGetallEmployees";
+import Error from "../Error/Error";
+import { error } from "console";
 
 interface EmployeeCardProps {
   employees: Employee[];
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage: string;
   show: boolean;
   handleOpenDeleteModal: (id: number) => void;
   handleOpenModal: (modalTitle: string, employee?: Employee) => void;
@@ -11,11 +18,29 @@ interface EmployeeCardProps {
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({
   employees,
+  isLoading,
+  isError,
+  errorMessage,
   show,
   handleOpenDeleteModal,
   handleOpenModal,
 }) => {
   console.log("Employee Card rendered");
+
+  if (isLoading)
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div>
+        <Error error={errorMessage} />
+      </div>
+    );
+
   return (
     <div className="container" id="main-container">
       <div className="row">
