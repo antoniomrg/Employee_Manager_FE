@@ -24,7 +24,7 @@ const useGetAllEmployees = () => {
     fetchEmployees();
   }, [fetchEmployees]);
 
-  return { employees, isLoading, isError, error };
+  return { employees, isLoading, isError, error, fetchEmployees };
 };
 
 export default useGetAllEmployees;

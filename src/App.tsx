@@ -16,7 +16,8 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import { showToast } from "utils/toastUtils";
 
 const App: React.FC = () => {
-  const { employees, isLoading, isError, error } = useGetAllEmployees();
+  const { employees, isLoading, isError, error, fetchEmployees } =
+    useGetAllEmployees();
   const { createEmployee } = useCreateEmployee();
   const { deleteEmployee } = useDeleteEmployee();
   const { updateEmployee } = useUpdateEmployee();
@@ -60,8 +61,9 @@ const App: React.FC = () => {
   }, []);
 
   const handleAddEmployee = useCallback(
-    (newEmployee: Employee) => {
-      createEmployee(newEmployee);
+    async (newEmployee: Employee) => {
+      await createEmployee(newEmployee);
+      fetchEmployees(); // Fetch the updated list of employees
       showToast("Employee added successfully", "success");
     },
     [createEmployee]
