@@ -10,13 +10,17 @@ import React, { useCallback, useMemo, useState } from "react";
 import DeleteEmployeeModal from "./components/DeleteEmployeeModal";
 import EmployeeCard from "./components/EmployeeCard";
 import EmployeeModal from "./components/EmployeeModal";
+import FloatingAddButton from "components/FloatingAddButton/FloatingAddButton";
 import { Employee } from "./services/Employee";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import { showToast } from "utils/toastUtils";
 
 const App: React.FC = () => {
   const { employees, isLoading, isError, error } = useGetAllEmployees();
   const { createEmployee } = useCreateEmployee();
   const { deleteEmployee } = useDeleteEmployee();
   const { updateEmployee } = useUpdateEmployee();
+
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -58,6 +62,7 @@ const App: React.FC = () => {
   const handleAddEmployee = useCallback(
     (newEmployee: Employee) => {
       createEmployee(newEmployee);
+      showToast("Employee added successfully", "success");
     },
     [createEmployee]
   );
@@ -65,6 +70,7 @@ const App: React.FC = () => {
   const handleUpdateEmployee = useCallback(
     (updatedEmployee: Employee) => {
       updateEmployee(updatedEmployee);
+      showToast("Employee edited successfully", "success");
     },
     [updateEmployee]
   );
@@ -72,7 +78,8 @@ const App: React.FC = () => {
   const handleDeleteEmployee = useCallback(() => {
     if (selectedEmployeeId !== null) {
       deleteEmployee(selectedEmployeeId);
-      handleCloseDeleteModal;
+      handleCloseDeleteModal();
+      showToast("Employee deleted successfully", "success");
     }
   }, [selectedEmployeeId, deleteEmployee, handleCloseDeleteModal]);
 
@@ -87,14 +94,12 @@ const App: React.FC = () => {
     return employees.filter((employee) =>
       employee.name.toLowerCase().includes(searchEmployeeInput.toLowerCase())
     );
-  }, [employees, searchEmployeeInput]);
+  }, [employees, searchEmployeeInput, handleAddEmployee]);
 
   return (
     <>
-      <Navbar
-        handleOpenModal={handleOpenModal}
-        handleSearchEmployeeInput={handleSearchEmployeeInput}
-      />
+      <ToastContainer />
+      <Navbar handleSearchEmployeeInput={handleSearchEmployeeInput} />
 
       <EmployeeModal
         show={showModal}
@@ -118,6 +123,7 @@ const App: React.FC = () => {
         handleClose={handleCloseDeleteModal}
         onDeleteEmployee={handleDeleteEmployee}
       />
+      <FloatingAddButton show={showModal} handleOpenModal={handleOpenModal} />
     </>
   );
 };

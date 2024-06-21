@@ -5,7 +5,8 @@ import { Employee } from "../services/Employee";
 const useGetEmployeesByName = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean | string>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState("");
 
   const getEmployeesByName = useCallback(async (name: string) => {
     setIsLoading(true);
@@ -14,7 +15,8 @@ const useGetEmployeesByName = () => {
       setEmployees(response.data);
       setIsLoading(false);
     } catch (error) {
-      setIsError("Error fetching employee");
+      setError("Error fetching employee");
+      setIsError(false);
     } finally {
       setIsLoading(false);
     }

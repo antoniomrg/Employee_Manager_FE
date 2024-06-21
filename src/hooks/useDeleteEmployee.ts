@@ -3,14 +3,16 @@ import { useCallback, useState } from "react";
 
 const useDeleteEmployee = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean | string>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState("");
 
   const deleteEmployee = useCallback(async (employeeId: number) => {
     setIsLoading(true);
     try {
       await EmployeeService.deleteEmployee(employeeId);
     } catch (error) {
-      setIsError("Error deleting employee");
+      setError("Error deleting employee");
+      setIsError(false);
     } finally {
       setIsLoading(false);
     }

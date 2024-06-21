@@ -3,14 +3,10 @@ import React, { ChangeEvent } from "react";
 import "../../index.css";
 
 interface NavbarProps {
-  handleOpenModal: (modalTitle: string) => void;
   handleSearchEmployeeInput: (name: string) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({
-  handleOpenModal,
-  handleSearchEmployeeInput,
-}) => {
+const Navbar: React.FC<NavbarProps> = ({ handleSearchEmployeeInput }) => {
   console.log("Navbar rendered");
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -37,26 +33,13 @@ const Navbar: React.FC<NavbarProps> = ({
         <span className="navbar-toggler-icon"></span>
       </button>
       <div
-        className="collapse navbar-collapse d-flex justify-content-between"
+        className="collapse navbar-collapse d-flex justify-content-between "
         id="navbarColor02"
       >
-        <div className="d-flex mx-auto">
-          <ul className="navbar-nav">
-            <li className="nav-item active">
-              <a
-                className="nav-link"
-                href="#"
-                onClick={() => handleOpenModal("Add Employee")}
-              >
-                Add Employee
-              </a>
-            </li>
-          </ul>
-        </div>
-        <form className="form-inline my-2 my-lg-0">
+        <form className="form-inline my-2 my-lg-0 ml-auto mr-3">
           <input
             type="search"
-            className="form-control mr-sm-2"
+            className="form-control mr-sm-2 "
             placeholder="Search employees..."
             required
             onChange={handleInputChange}

@@ -4,14 +4,16 @@ import { Employee } from "../services/Employee";
 
 const useUpdateEmployee = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean | string>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState("");
 
   const updateEmployee = useCallback(async (updatedEmployee: Employee) => {
     setIsLoading(true);
     try {
       await EmployeeService.updateEmployee(updatedEmployee);
     } catch (error) {
-      setIsError("Error updating employee");
+      setError("Error updating employee");
+      setIsError(false);
     } finally {
       setIsLoading(false);
     }

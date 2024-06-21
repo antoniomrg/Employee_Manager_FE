@@ -1,8 +1,10 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Employee } from "@serv/Employee";
 import EmployeeService from "../../services/EmployeeService";
+
+import "react-toastify/dist/ReactToastify.css";
 
 interface ModalProps {
   show: boolean;
@@ -22,6 +24,7 @@ const EmployeeModal: React.FC<ModalProps> = ({
   initialFormData,
 }) => {
   console.log("Modal rendered");
+
   const [formData, setFormData] = useState<Employee>({
     id: 0,
     name: "",
@@ -30,6 +33,7 @@ const EmployeeModal: React.FC<ModalProps> = ({
     phone: "",
     imageUrl: "",
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (initialFormData) {
@@ -56,6 +60,7 @@ const EmployeeModal: React.FC<ModalProps> = ({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     if (formData.id) {
       // Editing an existing employee
       try {
@@ -64,6 +69,8 @@ const EmployeeModal: React.FC<ModalProps> = ({
         handleClose();
       } catch (error) {
         console.error("Error updating employee:", error);
+      } finally {
+        setLoading(false);
       }
     } else {
       // Adding a new employee
@@ -73,93 +80,122 @@ const EmployeeModal: React.FC<ModalProps> = ({
         handleClose();
       } catch (error) {
         console.error("Error creating employee:", error);
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>{modalTitle}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              name="name"
-              className="form-control"
-              id="name"
-              placeholder="Name"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              className="form-control"
-              id="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="jobTitle">Job title</label>
-            <input
-              type="text"
-              name="jobTitle"
-              className="form-control"
-              id="jobTitle"
-              placeholder="Job title"
-              value={formData.jobTitle}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="phone">Phone</label>
-            <input
-              type="text"
-              name="phone"
-              className="form-control"
-              id="phone"
-              placeholder="Phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="imageUrl">Image URL</label>
-            <input
-              type="text"
-              name="imageUrl"
-              className="form-control"
-              id="imageUrl"
-              placeholder="Image URL"
-              value={formData.imageUrl}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" type="submit">
-              {modalTitle === "Add Employee" ? "Add Employee" : "Edit Employee"}
-            </Button>
-          </Modal.Footer>
-        </form>
-      </Modal.Body>
-    </Modal>
+    <>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                className="form-control"
+                id="name"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                disabled={loading}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                id="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                disabled={loading}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="jobTitle">Job title</label>
+              <input
+                type="text"
+                name="jobTitle"
+                className="form-control"
+                id="jobTitle"
+                placeholder="Job title"
+                value={formData.jobTitle}
+                onChange={handleInputChange}
+                required
+                disabled={loading}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phone">Phone</label>
+              <input
+                type="text"
+                name="phone"
+                className="form-control"
+                id="phone"
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
+                disabled={loading}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="imageUrl">Image URL</label>
+              <input
+                type="text"
+                name="imageUrl"
+                className="form-control"
+                id="imageUrl"
+                placeholder="Image URL"
+                value={formData.imageUrl}
+                onChange={handleInputChange}
+                required
+                disabled={loading}
+              />
+            </div>
+            <Modal.Footer>
+              <Button
+                variant="secondary"
+                onClick={handleClose}
+                disabled={loading}
+              >
+                Close
+              </Button>
+
+              <Button variant="primary" type="submit">
+                {loading ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    Adding…
+                  </>
+                ) : modalTitle === "Add Employee" ? (
+                  "Add Employee"
+                ) : (
+                  "Edit Employee"
+                )}
+              </Button>
+            </Modal.Footer>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 
