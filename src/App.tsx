@@ -28,6 +28,9 @@ const App: React.FC = () => {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number | null>(
     null
   );
+  const [selectedEmployeeName, setSelectedEmployeeName] = useState<
+    string | null
+  >(null);
   const [initialFormData, setInitialFormData] = useState<Employee | undefined>(
     undefined
   );
@@ -50,13 +53,15 @@ const App: React.FC = () => {
     setShowModal(false);
   }, []);
 
-  const handleOpenDeleteModal = useCallback((id: number) => {
+  const handleOpenDeleteModal = useCallback((id: number, name: string) => {
     setSelectedEmployeeId(id);
+    setSelectedEmployeeName(name);
     setShowDeleteModal(true);
   }, []);
 
   const handleCloseDeleteModal = useCallback(() => {
     setSelectedEmployeeId(null);
+    setSelectedEmployeeName(null);
     setShowDeleteModal(false);
   }, []);
 
@@ -72,15 +77,17 @@ const App: React.FC = () => {
   const handleUpdateEmployee = useCallback(
     (updatedEmployee: Employee) => {
       updateEmployee(updatedEmployee);
+      fetchEmployees();
       showToast("Employee edited successfully", "success");
     },
     [updateEmployee]
   );
 
-  const handleDeleteEmployee = useCallback(() => {
+  const handleDeleteEmployee = useCallback(async () => {
     if (selectedEmployeeId !== null) {
-      deleteEmployee(selectedEmployeeId);
+      await deleteEmployee(selectedEmployeeId);
       handleCloseDeleteModal();
+      fetchEmployees();
       showToast("Employee deleted successfully", "success");
     }
   }, [selectedEmployeeId, deleteEmployee, handleCloseDeleteModal]);
@@ -124,6 +131,7 @@ const App: React.FC = () => {
         show={showDeleteModal}
         handleClose={handleCloseDeleteModal}
         onDeleteEmployee={handleDeleteEmployee}
+        employeeName={selectedEmployeeName}
       />
       <FloatingAddButton show={showModal} handleOpenModal={handleOpenModal} />
     </>

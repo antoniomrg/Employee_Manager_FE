@@ -12,7 +12,7 @@ interface EmployeeCardProps {
   isError: boolean;
   errorMessage: string;
   show: boolean;
-  handleOpenDeleteModal: (id: number) => void;
+  handleOpenDeleteModal: (id: number, name: string) => void;
   handleOpenModal: (modalTitle: string, employee?: Employee) => void;
 }
 
@@ -98,7 +98,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
                     data-original-title="Delete"
                     onClick={() => {
                       if (employee.id !== undefined) {
-                        handleOpenDeleteModal(employee.id);
+                        handleOpenDeleteModal(employee.id, employee.name);
                       }
                     }}
                   >

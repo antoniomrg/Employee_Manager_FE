@@ -14,7 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({ handleSearchEmployeeInput }) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-navbar">
       <a
         className="navbar-brand ml-3"
         style={{ fontFamily: "Typist", color: "white", fontSize: "25px" }}

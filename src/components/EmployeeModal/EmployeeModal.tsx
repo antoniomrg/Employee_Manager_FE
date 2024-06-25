@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Modal, Button, Spinner } from "react-bootstrap";
+import { Modal, Button, Spinner, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Employee } from "@serv/Employee";
 import EmployeeService from "../../services/EmployeeService";
@@ -34,6 +34,7 @@ const EmployeeModal: React.FC<ModalProps> = ({
     imageUrl: "",
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialFormData) {
@@ -64,22 +65,26 @@ const EmployeeModal: React.FC<ModalProps> = ({
     if (formData.id) {
       // Editing an existing employee
       try {
+        // throw new Error();
         const response = await EmployeeService.updateEmployee(formData);
         onUpdateEmployee(response.data);
         handleClose();
-      } catch (error) {
-        console.error("Error updating employee:", error);
+      } catch (err) {
+        console.error("Error updating employee:", err);
+        setError("Error updating employee");
       } finally {
         setLoading(false);
       }
     } else {
       // Adding a new employee
       try {
+        // throw new Error();
         const response = await EmployeeService.createEmployee(formData);
         onAddEmployee(response.data);
         handleClose();
-      } catch (error) {
-        console.error("Error creating employee:", error);
+      } catch (err) {
+        console.error("Error creating employee:", err);
+        setError("Error creating employee");
       } finally {
         setLoading(false);
       }
@@ -164,6 +169,11 @@ const EmployeeModal: React.FC<ModalProps> = ({
                 disabled={loading}
               />
             </div>
+            {error && (
+              <Alert variant="danger" className="mt-3">
+                {error}
+              </Alert>
+            )}
             <Modal.Footer>
               <Button
                 variant="secondary"

@@ -18,7 +18,7 @@ const useDeleteEmployee = () => {
     }
   }, []);
 
-  return { deleteEmployee, isLoading, isError };
+  return { deleteEmployee, isLoading, isError, setIsError };
 };
 
 export default useDeleteEmployee;
