@@ -105,44 +105,6 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
                     <i className="fa fa-times"></i>
                   </a>
                 </div>
-                <ul className="social-links list-inline mb-0">
-                  <li className="list-inline-item">
-                    <a
-                      title=""
-                      data-placement="top"
-                      data-toggle="tooltip"
-                      className="tooltips"
-                      href=""
-                      data-original-title="Facebook"
-                    >
-                      <i className="fa fa-facebook-f"></i>
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a
-                      title=""
-                      data-placement="top"
-                      data-toggle="tooltip"
-                      className="tooltips"
-                      href=""
-                      data-original-title="Twitter"
-                    >
-                      <i className="fa fa-twitter"></i>
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a
-                      title=""
-                      data-placement="top"
-                      data-toggle="tooltip"
-                      className="tooltips"
-                      href=""
-                      data-original-title="Skype"
-                    >
-                      <i className="fa fa-skype"></i>
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-import { Button, Spinner, Alert } from "react-bootstrap";
+import { Alert, Button, Spinner } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { Employee } from "../../services/Employee";
 
 interface ModalProps {
   show: boolean;
@@ -26,7 +25,7 @@ const DeleteEmployeeModal: React.FC<ModalProps> = ({
     setLoading(true);
     setError(null);
     try {
-      // throw new Error("Simulated delete error");
+      throw new Error();
       await onDeleteEmployee();
       handleClose();
     } catch (err) {

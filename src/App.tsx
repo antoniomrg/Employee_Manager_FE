@@ -1,19 +1,19 @@
+import FloatingAddButton from "components/FloatingAddButton/FloatingAddButton";
 import Navbar from "components/Navbar";
 import {
   useCreateEmployee,
   useDeleteEmployee,
   useGetAllEmployees,
-  useGetEmployeesByName,
   useUpdateEmployee,
 } from "hooks";
 import React, { useCallback, useMemo, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { showToast } from "utils/toastUtils";
 import DeleteEmployeeModal from "./components/DeleteEmployeeModal";
 import EmployeeCard from "./components/EmployeeCard";
 import EmployeeModal from "./components/EmployeeModal";
-import FloatingAddButton from "components/FloatingAddButton/FloatingAddButton";
 import { Employee } from "./services/Employee";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import { showToast } from "utils/toastUtils";
+import { Alert } from "react-bootstrap";
 
 const App: React.FC = () => {
   const { employees, isLoading, isError, error, fetchEmployees } =
@@ -109,6 +109,10 @@ const App: React.FC = () => {
     <>
       <ToastContainer />
       <Navbar handleSearchEmployeeInput={handleSearchEmployeeInput} />
+
+      {filteredEmployees.length === 0 && (
+        <Alert variant="info">Sorry, no employees match your search</Alert>
+      )}
 
       <EmployeeModal
         show={showModal}
