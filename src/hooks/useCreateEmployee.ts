@@ -1,25 +1,27 @@
 import { useState, useEffect, useCallback } from "react";
 import EmployeeService from "../services/EmployeeService";
-import { Employee } from "../services/Employee";
+import { Employee } from "../interfaces/Employee";
 
 const useCreateEmployee = () => {
-  const [isError, setIsError] = useState<boolean | string>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState("");
+  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const createEmployee = useCallback(async (newEmployee: Employee) => {
     setIsLoading(true);
+    setIsError(false);
+    setError(null);
     try {
       await EmployeeService.createEmployee(newEmployee);
     } catch (error) {
+      setIsError(true);
       setError("Error creating a new employee");
-      setIsError(false);
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  return { createEmployee, isError, isLoading };
+  return { createEmployee, isError, isLoading, error };
 };
 
 export default useCreateEmployee;

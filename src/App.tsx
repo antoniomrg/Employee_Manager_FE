@@ -12,7 +12,7 @@ import { showToast } from "utils/toastUtils";
 import DeleteEmployeeModal from "./components/DeleteEmployeeModal";
 import EmployeeCard from "./components/EmployeeCard";
 import EmployeeModal from "./components/EmployeeModal";
-import { Employee } from "./services/Employee";
+import { Employee } from "./interfaces/Employee";
 import { Alert } from "react-bootstrap";
 
 const App: React.FC = () => {
@@ -34,7 +34,8 @@ const App: React.FC = () => {
   const [initialFormData, setInitialFormData] = useState<Employee | undefined>(
     undefined
   );
-  const [searchEmployeeInput, setSearchEmployeeInput] = useState("");
+  const [searchEmployeeInput, setSearchEmployeeInput] = useState<string>("");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
   const handleOpenModal = useCallback(
     (modalTitle: string, employee?: Employee) => {
@@ -66,9 +67,9 @@ const App: React.FC = () => {
   }, []);
 
   const handleAddEmployee = useCallback(
-    async (newEmployee: Employee) => {
-      await createEmployee(newEmployee);
-      fetchEmployees(); // Fetch the updated list of employees
+    (newEmployee: Employee) => {
+      createEmployee(newEmployee);
+      fetchEmployees();
       showToast("Employee added successfully", "success");
     },
     [createEmployee]
@@ -94,6 +95,7 @@ const App: React.FC = () => {
 
   const handleSearchEmployeeInput = useCallback((name: string) => {
     setSearchEmployeeInput(name);
+    setIsSearching(true);
   }, []);
 
   const filteredEmployees = useMemo(() => {
@@ -110,7 +112,7 @@ const App: React.FC = () => {
       <ToastContainer />
       <Navbar handleSearchEmployeeInput={handleSearchEmployeeInput} />
 
-      {filteredEmployees.length === 0 && (
+      {isSearching && filteredEmployees.length === 0 && (
         <Alert variant="info">Sorry, no employees match your search</Alert>
       )}
 

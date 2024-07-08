@@ -1,6 +1,6 @@
 import EmployeeService from "../services/EmployeeService";
 import { useCallback, useEffect, useState } from "react";
-import { Employee } from "../services/Employee";
+import { Employee } from "../interfaces/Employee";
 
 const useGetEmployeesByName = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);

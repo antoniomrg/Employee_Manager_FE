@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Modal, Button, Spinner, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Employee } from "@serv/Employee";
+import { Employee, Employees } from "../../interfaces/Employee";
 import EmployeeService from "../../services/EmployeeService";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -25,14 +25,16 @@ const EmployeeModal: React.FC<ModalProps> = ({
 }) => {
   console.log("Modal rendered");
 
-  const [formData, setFormData] = useState<Employee>({
+  const initialFormState: Employee = {
     id: 0,
     name: "",
     email: "",
     jobTitle: "",
     phone: "",
     imageUrl: "",
-  });
+  };
+
+  const [formData, setFormData] = useState<Employee>(initialFormState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,14 +42,7 @@ const EmployeeModal: React.FC<ModalProps> = ({
     if (initialFormData) {
       setFormData(initialFormData);
     } else {
-      setFormData({
-        id: 0,
-        name: "",
-        email: "",
-        jobTitle: "",
-        phone: "",
-        imageUrl: "",
-      });
+      setFormData(initialFormState);
     }
   }, [initialFormData]);
 
@@ -57,37 +52,33 @@ const EmployeeModal: React.FC<ModalProps> = ({
       ...formData,
       [name]: value,
     });
+    console.log(formData);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    if (formData.id) {
-      // Editing an existing employee
-      try {
-        // throw new Error();
+    setError(null); // Clear any previous errors
+
+    try {
+      if (formData.id) {
+        // Editing an existing employee
         const response = await EmployeeService.updateEmployee(formData);
         onUpdateEmployee(response.data);
-        handleClose();
-      } catch (err) {
-        console.error("Error updating employee:", err);
-        setError("Error updating employee");
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      // Adding a new employee
-      try {
-        // throw new Error();
+      } else {
+        // Adding a new employee
         const response = await EmployeeService.createEmployee(formData);
         onAddEmployee(response.data);
-        handleClose();
-      } catch (err) {
-        console.error("Error creating employee:", err);
-        setError("Error creating employee");
-      } finally {
-        setLoading(false);
       }
+      handleClose();
+    } catch (err) {
+      console.error(
+        `Error ${formData.id ? "updating" : "adding"} employee`,
+        err
+      );
+      setError(`Error ${formData.id ? "updating" : "adding"} employee`);
+    } finally {
+      setLoading(false);
     }
   };
 

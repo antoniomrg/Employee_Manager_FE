@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Employee } from "../services/Employee";
+import { Employee } from "../interfaces/Employee";
 import EmployeeService from "../services/EmployeeService";
 
 const useGetAllEmployees = () => {
@@ -9,12 +9,15 @@ const useGetAllEmployees = () => {
   const [error, setError] = useState<string>("");
 
   const fetchEmployees = useCallback(async () => {
+    setIsLoading(true);
+    setIsError(false);
+    setError("");
     try {
       const response = await EmployeeService.getAllEmployees();
       setEmployees(response.data);
     } catch (error) {
       setError("Error fetching employees");
-      setIsError(false);
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }

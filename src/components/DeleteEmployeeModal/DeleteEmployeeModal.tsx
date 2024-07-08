@@ -25,7 +25,7 @@ const DeleteEmployeeModal: React.FC<ModalProps> = ({
     setLoading(true);
     setError(null);
     try {
-      throw new Error();
+      // throw new Error();
       await onDeleteEmployee();
       handleClose();
     } catch (err) {
@@ -44,7 +44,7 @@ const DeleteEmployeeModal: React.FC<ModalProps> = ({
 
       <Modal.Body>
         <p>
-          Are you sure you want to delete <b>{employeeName}</b> ?
+          Are you sure you want to delete <b>{employeeName}</b>?
         </p>
         {error && (
           <Alert variant="danger" className="mt-3">

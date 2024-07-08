@@ -1,6 +1,6 @@
 import EmployeeService from "../services/EmployeeService";
 import { useCallback, useEffect, useState } from "react";
-import { Employee } from "../services/Employee";
+import { Employee } from "../interfaces/Employee";
 
 const useUpdateEmployee = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -9,11 +9,13 @@ const useUpdateEmployee = () => {
 
   const updateEmployee = useCallback(async (updatedEmployee: Employee) => {
     setIsLoading(true);
+    setIsError(false);
+    setError("");
     try {
       await EmployeeService.updateEmployee(updatedEmployee);
     } catch (error) {
       setError("Error updating employee");
-      setIsError(false);
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }

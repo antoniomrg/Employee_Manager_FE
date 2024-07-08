@@ -8,11 +8,13 @@ const useDeleteEmployee = () => {
 
   const deleteEmployee = useCallback(async (employeeId: number) => {
     setIsLoading(true);
+    setIsError(false);
+    setError("");
     try {
       await EmployeeService.deleteEmployee(employeeId);
     } catch (error) {
       setError("Error deleting employee");
-      setIsError(false);
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }

@@ -17,7 +17,7 @@ const SearchEmployeeForm: React.FC<SearchEmployeeFormProps> = ({
         <input
           type="search"
           className="form-control mr-sm-2 "
-          placeholder="Search employees..."
+          placeholder="Search for employees..."
           required
           onChange={handleInputChange}
         />

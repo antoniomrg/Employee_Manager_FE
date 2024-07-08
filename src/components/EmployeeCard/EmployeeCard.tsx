@@ -1,13 +1,11 @@
 import React from "react";
+import { Employee, Employees } from "../../interfaces/Employee";
 import "../../styles.css";
-import { Employee } from "@serv/Employee";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import useGetAllEmployees from "../../hooks/useGetallEmployees";
 import Error from "../Error/Error";
-import { error } from "console";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 interface EmployeeCardProps {
-  employees: Employee[];
+  employees: Employees;
   isLoading: boolean;
   isError: boolean;
   errorMessage: string;
@@ -96,7 +94,8 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
                     className="btn btn-secondary tooltips"
                     data-placement="top"
                     data-original-title="Delete"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       if (employee.id !== undefined) {
                         handleOpenDeleteModal(employee.id, employee.name);
                       }

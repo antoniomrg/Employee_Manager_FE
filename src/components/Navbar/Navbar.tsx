@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { ChangeEvent } from "react";
 import "../../index.css";
-import SearchEmployeeForm from "../SearchEmployeeForm/SearchEmployeeForm";
+import SearchEmployeeForm from "../SearchEmployeeForm";
 
 interface NavbarProps {
   handleSearchEmployeeInput: (name: string) => void;
