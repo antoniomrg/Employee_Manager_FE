@@ -1,7 +1,5 @@
 ## The Office-inspired Employee Manager Web App
 
-Simple front-end project to consume the API created in this video: https://www.youtube.com/watch?v=Gx4iBLKLVHk.
-
 This project is an Employee Management System designed to streamline the process of managing employee records. It allows users to perform CRUD (Create, Read, Update, Delete) operations on employee data with a user-friendly interface.
 
 ### Technologies Used
