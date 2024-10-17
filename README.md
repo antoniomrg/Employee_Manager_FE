@@ -18,7 +18,8 @@ This project is an Employee Management System designed to streamline the process
 - **Styling**: CSS, Bootstrap, Material-UI
 - **Utilities**: react-toastify for notifications
 
+### Screenshot of main UI ###
   
-
 ![image](https://github.com/antoniomrg/employee-manager-typescript/assets/39682486/1c359af8-1893-472d-aa11-25e369ae97a5)
+
 
