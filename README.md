@@ -1,6 +1,6 @@
 ## The Office-inspired Employee Manager Web App
 
-This project is an Employee Management System designed to streamline the process of managing employee records. It allows users to perform CRUD (Create, Read, Update, Delete) operations on employee data with a user-friendly interface.
+This project is an Employee Management System designed to streamline the process of managing employee records. It allows users to perform CRUD (Create, Read, Update, Delete) operations on employee data with a user-friendly interface. (The back-end code for this application can be found in a separate repository: https://github.com/antoniomrg/Employee_Manager_BE.git)
 
 ### Features ###
 - **Add/Edit Employee**: Create new employees or update existing employee details using a form modal.
@@ -21,5 +21,4 @@ This project is an Employee Management System designed to streamline the process
 ### Screenshot of main UI ###
   
 ![image](https://github.com/antoniomrg/employee-manager-typescript/assets/39682486/1c359af8-1893-472d-aa11-25e369ae97a5)
-
 
